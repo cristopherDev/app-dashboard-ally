@@ -1,0 +1,33 @@
+{
+  "name": "app-dashboard-ally",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cristopherDev/app-dashboard-ally.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cristopherDev/app-dashboard-ally/issues"
+  },
+  "homepage": "https://github.com/cristopherDev/app-dashboard-ally#readme",
+  "dependencies": {
+    "@ant-design/icons": "^4.8.0",
+    "antd": "^5.1.2",
+    "dayjs": "^1.11.7",
+    "easy-peasy": "^5.2.0",
+    "next": "^13.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
