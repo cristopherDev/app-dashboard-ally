@@ -1,6 +1,6 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
-import { Card, Row, Col, Form, Input, Button, Typography } from "antd";
-import useCreateUser from "../../hooks/useCreateUser";
+import { Card, Row, Col, Form, Input, Button, Typography, Modal } from "antd";
 
 const { Title, Link } = Typography;
 
@@ -13,17 +13,38 @@ export default function FormCreate() {
   });
 
   const [form] = Form.useForm();
+  const router = useRouter();
 
   const onChange = (values) => {
-    console.log('->', values)
     const { errors, name, value } = values[0];
     const key = name[0];
 
-    console.log(user[key])
-
     if (!errors.length) setUser((user) => ({ ...user, [key]: value }));
-    if (errors.length) setUser((user) => ({ ...user, [key]: '' }));
-    if (key === 'password' && value !== user.password) setUser((user) => ({ ...user, ['confirm_password']: '' }));
+    if (errors.length) setUser((user) => ({ ...user, [key]: "" }));
+    if (key === "password" && value !== user.password)
+      setUser((user) => ({ ...user, ["confirm_password"]: "" }));
+  };
+
+  const success = (email) => {
+    Modal.success({
+      content: `Usuario: ${email} registrado correctamente`,
+      onOk() {
+        router.push("/");
+      },
+    });
+  };
+
+  const clearForm = () => {
+    success(user.email);
+
+    setUser({
+      name: "",
+      email: "",
+      password: "",
+      confirm_password: "",
+    });
+
+    form.resetFields();
   };
 
   return (
@@ -33,7 +54,12 @@ export default function FormCreate() {
           <Title level={3}>Crear Cuenta</Title>
         </Col>
       </Row>
-      <Form form={form} layout="vertical" onFieldsChange={onChange}>
+      <Form
+        form={form}
+        layout="vertical"
+        onFieldsChange={onChange}
+        onFinish={clearForm}
+      >
         <Form.Item
           name="name"
           label="Nombre"
@@ -75,6 +101,17 @@ export default function FormCreate() {
               label="Password"
               rules={[
                 { required: true, message: "La contraseña es requerida" },
+                {
+                  message: "Password muy devil (menos de 8 caracteres)",
+                  validator: (_, val) => {
+                    const regPassword = new RegExp("^[a-zA-Z0-9]{8,30}$");
+                    const checkPassword = regPassword.test(val);
+
+                    if (!checkPassword) return Promise.reject(false);
+
+                    return Promise.resolve();
+                  },
+                },
               ]}
             >
               <Input
@@ -87,15 +124,30 @@ export default function FormCreate() {
           <Col span={12}>
             <Form.Item
               label="Confirm password"
-              validateStatus={user.confirm_password.length && user.password == user.confirm_password ? '' : 'error'}
-              help={user.confirm_password.length && user.password == user.confirm_password ? '' : 'Favor de confirmar el password'}
+              validateStatus={
+                user.confirm_password.length &&
+                user.password == user.confirm_password
+                  ? ""
+                  : "error"
+              }
+              help={
+                user.confirm_password.length &&
+                user.password == user.confirm_password
+                  ? ""
+                  : "Favor de confirmar el password"
+              }
             >
               <Input
                 size="large"
                 placeholder="Confirme Password"
                 type="password"
                 value={user.confirm_password}
-                onChange={({ target }) => { setUser(user => ({ ...user, confirm_password: target.value })) }}
+                onChange={({ target }) => {
+                  setUser((user) => ({
+                    ...user,
+                    confirm_password: target.value,
+                  }));
+                }}
                 disabled={user.password ? false : true}
               />
             </Form.Item>
@@ -115,7 +167,14 @@ export default function FormCreate() {
           type="primary"
           htmlType="submit"
           onClick={() => {}}
-          disabled={user.name && user.email && user.password && user.password == user.confirm_password ? false : true}
+          disabled={
+            user.name &&
+            user.email &&
+            user.password &&
+            user.password == user.confirm_password
+              ? false
+              : true
+          }
           loading={false}
           block
         >

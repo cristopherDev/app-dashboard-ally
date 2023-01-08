@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Row, Col, Card, Form, Input, Button, Typography } from "antd";
 import { UserOutlined, UnlockOutlined } from "@ant-design/icons";
 import { useStoreState, useStoreActions } from "easy-peasy";
+import axios from "axios";
 
 const { Title, Link } = Typography;
 
@@ -15,11 +16,14 @@ const Login = () => {
 
   const router = useRouter();
 
-  useEffect(() => {
-    if (user.loged) {
-      router.push("/main");
+  const authUser = async (page) => {
+    try {
+      const fetchAuth = await axios.post('/api/auth', user)
+      console.log(fetchAuth)
+    } catch (error) {
+      console.log(error)
     }
-  });
+  }
 
   const [form] = Form.useForm();
 
@@ -57,7 +61,7 @@ const Login = () => {
         <Button
           size="large"
           type="primary"
-          onClick={() => {}}
+          onClick={() => { authUser() }}
           disabled={user.email && user.password ? false : true}
           loading={loading}
           block
