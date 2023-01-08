@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Card, Row, Col, Form, Input, Button, Typography, Modal } from "antd";
+import axios from "axios";
 
 const { Title, Link } = Typography;
 
@@ -34,7 +35,10 @@ export default function FormCreate() {
     });
   };
 
-  const clearForm = () => {
+  const addNewUser = async () => {
+    const { name, email, password } = user
+    await axios.post("/api/newuser", { name, email, password });
+
     success(user.email);
 
     setUser({
@@ -58,7 +62,7 @@ export default function FormCreate() {
         form={form}
         layout="vertical"
         onFieldsChange={onChange}
-        onFinish={clearForm}
+        onFinish={addNewUser}
       >
         <Form.Item
           name="name"

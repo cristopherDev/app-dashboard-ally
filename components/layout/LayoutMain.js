@@ -25,6 +25,11 @@ const LayoutMain = (props) => {
 
   function setMenuSelect (opt, go) {
     setMenu(opt)
+
+    if (opt === '3') {
+      sessionStorage.clear()
+    }
+
     router.push(go);
   }
 
@@ -38,6 +43,7 @@ const LayoutMain = (props) => {
             </Menu.Item>
             <Menu.Item key="1" onClick={() => { setMenuSelect('1', '/dashboard') }}>Weather</Menu.Item>
             <Menu.Item key="2" onClick={() => { setMenuSelect('2', '/dashboard/users') }}>Usuarios</Menu.Item>
+            <Menu.Item key="3" onClick={() => { setMenuSelect('3', '/') }}>Salir</Menu.Item>
           </Menu>
         </Sider>
         <Layout>
