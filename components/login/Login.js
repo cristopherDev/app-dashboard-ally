@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { Row, Col, Card, Form, Input, Button, Typography } from "antd";
+import { useState } from "react";
+import { Row, Col, Card, Form, Input, Button, Typography, message } from "antd";
 import { UserOutlined, UnlockOutlined } from "@ant-design/icons";
 import { useStoreState, useStoreActions } from "easy-peasy";
 import axios from "axios";
@@ -8,20 +8,35 @@ import axios from "axios";
 const { Title, Link } = Typography;
 
 const Login = () => {
-  const user = useStoreState((state) => state.user);
-  const loading = useStoreState((state) => state.loading);
+  const [loading, setLoading] = useState(false)
 
+  const user = useStoreState((state) => state.user);
   const setStateUser = useStoreActions((action) => action.setStateUser);
-  //const loginUser = useStoreActions((action) => action.loginUser);
 
   const router = useRouter();
 
   const authUser = async (page) => {
     try {
+      setLoading(true)
       const fetchAuth = await axios.post('/api/auth', user)
-      console.log(fetchAuth)
+
+      const { data } = fetchAuth
+      
+      sessionStorage.setItem('email', user.email)
+      sessionStorage.setItem('id', data.id)
+      sessionStorage.setItem('auth', data.auth)
+      sessionStorage.setItem('token', data.token)
+
+      setLoading(false)
+
+      router.push('/dashboard')
     } catch (error) {
+      message.open({
+        type: 'error',
+        content: 'El usuario no existe o la contraseña es incorrecta',
+      });
       console.log(error)
+      setLoading(false)
     }
   }
 
@@ -62,7 +77,7 @@ const Login = () => {
           size="large"
           type="primary"
           onClick={() => { authUser() }}
-          disabled={user.email && user.password ? false : true}
+          disabled={user.email && user.password && !loading ? false : true}
           loading={loading}
           block
         >

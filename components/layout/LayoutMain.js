@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { Layout, Menu, Typography } from "antd";
 import dayjs from "dayjs";
 
@@ -9,13 +9,15 @@ const { Title, Text } = Typography;
 const LayoutMain = (props) => {
   const router = useRouter();
 
-  /*useLayoutEffect(() => {
-        let check = sessionStorage.getItem('checkUser');
+  useEffect(() => {
+        const auth = sessionStorage.getItem('auth');
+        const email = sessionStorage.getItem('email');
+        const token = sessionStorage.getItem('token');
 
-        if (!check) {
+        if (!auth && !email && !token) {
             router.push('/');
         }
-    }, []);*/
+    }, []);
 
   return (
     <Layout style={Styles.layoutBody}>

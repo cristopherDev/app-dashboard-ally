@@ -12,24 +12,50 @@ export default function CardCountries() {
         <Col span={24}>
           <Space>
             <Avatar size={100} src={"/imgs/mx.svg"} />
-            <Text style={{ fontSize: 26 }} onClick={() => { setCountry('mexico') }}>México</Text>
+            <Text
+              style={Styles.linkCountry}
+              onClick={() => {
+                setCountry("mexico");
+              }}
+            >
+              México
+            </Text>
           </Space>
         </Col>
 
-        <Col span={24} style={{ paddingTop: 24 }}>
+        <Col span={24} style={Styles.costumCol}>
           <Space>
             <Avatar size={100} src={"/imgs/au.svg"} />
-            <Text style={{ fontSize: 26 }} onClick={() => { setCountry('australia') }}>Australia</Text>
+            <Text
+              style={Styles.linkCountry}
+              onClick={() => {
+                setCountry("australia");
+              }}
+            >
+              Australia
+            </Text>
           </Space>
         </Col>
 
-        <Col span={24} style={{ paddingTop: 24 }}>
+        <Col span={24} style={Styles.costumCol}>
           <Space>
             <Avatar size={100} src={"/imgs/co.svg"} />
-            <Text style={{ fontSize: 26 }} onClick={() => { setCountry('colombia') }}>Colombia</Text>
+            <Text
+              style={Styles.linkCountry}
+              onClick={() => {
+                setCountry("colombia");
+              }}
+            >
+              Colombia
+            </Text>
           </Space>
         </Col>
       </Row>
     </Card>
   );
 }
+
+const Styles = {
+  costumCol: { paddingTop: 24 },
+  linkCountry: { fontSize: 26, cursor: "pointer" },
+};
