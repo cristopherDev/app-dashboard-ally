@@ -26,12 +26,7 @@ export default function CardShowTime() {
 
   return (
     <Card title="Hora" bordered={false}>
-      {
-        time ?
-        <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{time}</Text>
-        :
-        null
-      }
+      <Text style={{ fontSize: 16, fontWeight: 'bold' }}>{time}</Text>
       <br/>
       <Text style={{ fontSize: 16 }}>{timeZoneSelected}</Text>
     </Card>

@@ -1,10 +1,36 @@
+import { useEffect } from 'react'
 import { Row, Col, Card, Avatar, Typography, Space } from "antd";
-import { useStoreActions } from "easy-peasy";
+import { useStoreState, useStoreActions } from "easy-peasy";
 
 const { Text } = Typography;
 
+const countries = {
+  mexico: 'Mexico',
+  colombia: 'Colombia',
+  australia: 'Australia'
+}
+
 export default function CardCountries() {
+  const country = useStoreState((state) => state.country);
+
   const setCountry = useStoreActions((action) => action.setCountry);
+  const fetchWeather = useStoreActions((action) => action.fetchWeather);
+
+  const getWeatherCountry = async() => {
+    const token = sessionStorage.getItem("token");
+
+    await fetchWeather({country: countries[country], token})
+  }
+
+  async function updateWeather(country) {
+    setCountry(country)
+
+    const token = sessionStorage.getItem("token");
+
+    await fetchWeather({country: countries[country], token})
+  }
+
+  useEffect(() => { getWeatherCountry() }, [])
 
   return (
     <Card title="PAISES DISPONIBLES" bordered={false}>
@@ -15,7 +41,7 @@ export default function CardCountries() {
             <Text
               style={Styles.linkCountry}
               onClick={() => {
-                setCountry("mexico");
+                updateWeather("mexico");
               }}
             >
               México
@@ -29,7 +55,7 @@ export default function CardCountries() {
             <Text
               style={Styles.linkCountry}
               onClick={() => {
-                setCountry("australia");
+                updateWeather("australia");
               }}
             >
               Australia
@@ -43,7 +69,7 @@ export default function CardCountries() {
             <Text
               style={Styles.linkCountry}
               onClick={() => {
-                setCountry("colombia");
+                updateWeather("colombia");
               }}
             >
               Colombia

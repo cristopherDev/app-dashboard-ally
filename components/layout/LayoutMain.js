@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { Layout, Menu, Typography } from "antd";
+import { useStoreState, useStoreActions } from "easy-peasy";
 import dayjs from "dayjs";
 
 const { Content, Header, Footer, Sider } = Layout;
@@ -8,6 +9,9 @@ const { Title, Text } = Typography;
 
 const LayoutMain = (props) => {
   const router = useRouter();
+
+  const menu = useStoreState((state) => state.menu);
+  const setMenu = useStoreActions((action) => action.setMenu);
 
   useEffect(() => {
         const auth = sessionStorage.getItem('auth');
@@ -19,16 +23,21 @@ const LayoutMain = (props) => {
         }
     }, []);
 
+  function setMenuSelect (opt, go) {
+    setMenu(opt)
+    router.push(go);
+  }
+
   return (
     <Layout style={Styles.layoutBody}>
       <Layout>
         <Sider width={200}>
-          <Menu defaultSelectedKeys={['1']} mode="inline" style={{ height: "100%", borderRight: 0 }}>
+          <Menu defaultSelectedKeys={[menu]} mode="inline" style={{ height: "100%", borderRight: 0 }}>
             <Menu.Item key="0">
               <Title level={5}>Dashboard</Title>
             </Menu.Item>
-            <Menu.Item key="1">Weather</Menu.Item>
-            <Menu.Item key="2">Usuarios</Menu.Item>
+            <Menu.Item key="1" onClick={() => { setMenuSelect('1', '/dashboard') }}>Weather</Menu.Item>
+            <Menu.Item key="2" onClick={() => { setMenuSelect('2', '/dashboard/users') }}>Usuarios</Menu.Item>
           </Menu>
         </Sider>
         <Layout>
